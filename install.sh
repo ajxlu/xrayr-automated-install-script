@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO="${XRAYR_REPO:-JackHONGhy/xrayr-automated-install-script}"
+REPO="${XRAYR_REPO:-ajxlu/xrayr-automated-install-script}"
 BRANCH="${XRAYR_BRANCH:-master}"
 MANAGER="xrayr-manager.sh"
 BASE_URL="${XRAYR_BASE_URL:-https://raw.githubusercontent.com/${REPO}/${BRANCH}}"
@@ -54,10 +54,12 @@ echo "Matched XrayR package architecture: ${ARCH_NAME}"
 echo "Selected package: ${ARCHIVE}"
 echo "Starting installation for ${ARCH_NAME}..."
 echo
+
 echo "Downloading XrayR runtime package..."
 curl -fL --retry 3 --connect-timeout 15 \
   -o "${TMP_DIR}/${ARCHIVE}" \
   "${BASE_URL}/${ARCHIVE}"
+
 curl -fL --retry 3 --connect-timeout 15 \
   -o "${TMP_DIR}/${MANAGER}" \
   "${BASE_URL}/${MANAGER}"
@@ -71,8 +73,11 @@ fi
 
 echo "Installing files..."
 tar -xzf "${TMP_DIR}/${ARCHIVE}" -C /
+
 chmod +x /usr/local/XrayR/XrayR
+
 install -m 0755 "${TMP_DIR}/${MANAGER}" /usr/bin/XrayR
+
 ln -sf /usr/bin/XrayR /usr/bin/xrayr
 ln -sf /usr/bin/XrayR /usr/local/bin/XrayR
 ln -sf /usr/bin/XrayR /usr/local/bin/xrayr
